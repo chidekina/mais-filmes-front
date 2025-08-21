@@ -1,0 +1,15 @@
+:root {
+  --black-color: #000000;
+  --white-color: #ffffff;
+  --highlight-color: #ff3b30;
+  --black-graphite-color: #1c1c1e;
+  --medium-gray-color: rgb(57, 57, 60);
+  --light-gray-color: rgb(209, 209, 214);
+}
+
+body {
+  font-family: "Nata Sans", sans-serif;
+  background-color: #1c1c1e;
+  color: white;
+}
+
