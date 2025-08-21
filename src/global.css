@@ -3,8 +3,8 @@
   --white-color: #ffffff;
   --highlight-color: #ff3b30;
   --black-graphite-color: #1c1c1e;
-  --medium-gray-color: rgb(57, 57, 60);
-  --light-gray-color: rgb(209, 209, 214);
+  --medium-gray-color: #39393c;
+  --light-gray-color: #d1d1d6;
 }
 
 body {
