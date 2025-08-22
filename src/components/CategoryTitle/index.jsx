@@ -27,12 +27,12 @@ const CategoryHeader = styled.div`
     }
 `
 
-const CategoryTitle = ({ moviesNumber }) => {
+const CategoryTitle = ({ title, moviesNumber }) => {
     return (
         <CategoryHeader>
             <div>
                 <img src="/film-reel.svg" alt="Icone de um filme" />
-                <h1>Filmes Populares</h1>
+                <h1>{title}</h1>
             </div>
             <p>Total de filmes: <span>{moviesNumber}</span></p>
         </CategoryHeader>

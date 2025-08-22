@@ -49,7 +49,7 @@ const Loading = ({ onFinish }) => {
         if (!minLoading) return;
         const phraseTimer = setInterval(() => {
             setPhraseIndex(idx => (idx + 1) % phrases.length);
-        }, 500);
+        }, 400);
         return () => clearInterval(phraseTimer);
     }, [minLoading]);
 

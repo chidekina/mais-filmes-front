@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
-import { fetchPopularMovies, getImageUrl } from "../../services/api";
+import { fetchNowPlayingMovies, fetchPopularMovies, fetchTopRatedMovies, fetchUpcomingMovies, getImageUrl } from "../../services/api";
 import MainContainer from "../../components/MainContainer";
 import WelcomeTitle from "../../components/WelcomeTitle";
 import CategoryTitle from "../../components/CategoryTitle";
 import SearchBar from "../../components/SearchBar";
-import PopularMovies from "../../components/PopularMovies";
+import MoviesList from "../../components/MoviesList";
 import Loading from "../../components/Loading";
+import CategoriesSelect from "../../components/CategoriesSelect";
 
 const Home = () => {
-    const [movies, setMovies] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("popular");
+    const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+    const [popularMovies, setPopularMovies] = useState([]);
+    const [topRatedMovies, setTopRatedMovies] = useState([]);
+    const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [minLoading, setMinLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const getMovies = async () => {
+        const getPopularMovies = async () => {
             try {
                 setLoading(true);
                 setError(null);
 
                 const data = await fetchPopularMovies();
-                console.log('Dados da API:', data);
 
-                setMovies(data.results || []);
+                setPopularMovies(data.results || []);
             } catch (error) {
                 console.error('Erro ao carregar filmes:', error);
                 setError('Erro ao carregar filmes. Tente novamente.');
@@ -31,10 +35,66 @@ const Home = () => {
             }
         };
 
-        getMovies();
+        const getNowPlayingMovies = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const data = await fetchNowPlayingMovies();
+
+                setNowPlayingMovies(data.results || []);
+            } catch (error) {
+                console.error('Erro ao carregar filmes:', error);
+                setError('Erro ao carregar filmes. Tente novamente.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const getTopRatedMovies = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const data = await fetchTopRatedMovies();
+
+                setTopRatedMovies(data.results || []);
+            } catch (error) {
+                console.error('Erro ao carregar filmes:', error);
+                setError('Erro ao carregar filmes. Tente novamente.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const getUpcomingMovies = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const data = await fetchUpcomingMovies();
+
+                setUpcomingMovies(data.results || []);
+            } catch (error) {
+                console.error('Erro ao carregar filmes:', error);
+                setError('Erro ao carregar filmes. Tente novamente.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getUpcomingMovies();
+        getNowPlayingMovies();
+        getTopRatedMovies();
+        getPopularMovies();
     }, []);
 
-    // Só mostra conteúdo quando ambos loading e minLoading forem false
+    let moviesToShow = [];
+    if (selectedCategory === "popular") moviesToShow = popularMovies;
+    if (selectedCategory === "nowPlaying") moviesToShow = nowPlayingMovies;
+    if (selectedCategory === "topRated") moviesToShow = topRatedMovies;
+    if (selectedCategory === "upcoming") moviesToShow = upcomingMovies;
+
     if (loading || minLoading) {
         return (
             <MainContainer>
@@ -54,16 +114,20 @@ const Home = () => {
         );
     }
 
+
     return (
         <MainContainer>
             <WelcomeTitle />
             <SearchBar />
-            <CategoryTitle moviesNumber={movies.length} />
-            <PopularMovies
-                movies={movies}
+            <CategoriesSelect
+                selectedCategory={selectedCategory}
+                onClick={setSelectedCategory}
+                moviesToShow={moviesToShow}
+            />
+            <MoviesList
+                movies={moviesToShow}
                 getImageUrl={getImageUrl}
             />
-
         </MainContainer>
     );
 };

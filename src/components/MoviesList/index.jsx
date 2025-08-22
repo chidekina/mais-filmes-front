@@ -8,18 +8,18 @@ const ContainerMovies = styled.div`
     padding: 20px 0;
 `
 
-const PopularMovies = ({ movies, getImageUrl }) => {
+const MoviesList = ({ movies, getImageUrl }) => {
     return (
         <ContainerMovies>
             {movies.map(movie => (
                 <MovieCard
+                    key={movie.id}
                     movie={movie}
                     getImageUrl={getImageUrl}
                 />
             ))}
         </ContainerMovies>
-
     );
 }
 
-export default PopularMovies;
+export default MoviesList;

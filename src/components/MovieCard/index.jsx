@@ -5,7 +5,14 @@ const Card = styled.div`
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     padding: 15px;
-    transition: transform 0.2s;
+    transition: transform 0.2s, opacity 0.5s;
+    opacity: 0;
+    animation: fadeIn 0.6s forwards;
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
 
     & img {
         width: 100%;
@@ -30,7 +37,7 @@ const Card = styled.div`
         transform: translateY(-5px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
-    `
+`
 const Overview = styled.p`
         font-style: italic;
     margin-top: 10px;
@@ -38,7 +45,7 @@ const Overview = styled.p`
 
 const MovieCard = ({ movie, getImageUrl }) => {
     return (
-        <Card key={movie.id} className="movie-card">
+        <Card className="movie-card">
             <img
                 src={getImageUrl(movie.poster_path)}
                 alt={movie.title}
@@ -54,7 +61,7 @@ const MovieCard = ({ movie, getImageUrl }) => {
                 movie.overview
             }</Overview>
         </Card>
-     );
+    );
 }
 
 export default MovieCard;

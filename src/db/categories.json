@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "label": "Populares",
+    "key": "popular"
+  },
+  {
+    "id": 2,
+    "label": "Em Cartaz",
+    "key": "nowPlaying"
+  },
+  {
+    "id": 3,
+    "label": "Mais Votados",
+    "key": "topRated"
+  },
+  {
+    "id": 4,
+    "label": "Próximos",
+    "key": "upcoming"
+  }
+]
