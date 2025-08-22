@@ -1,0 +1,45 @@
+import styled from "styled-components";
+
+const StyledNav = styled.nav`
+    max-width: 80rem;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    @media (min-width: 640px) {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    @media (min-width: 1024px) {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+`;
+
+const NavRow = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+`;
+
+const NavContainer = ({ children, isMenuOpen, onItemClick }) => {
+    return (
+        <StyledNav>
+            <NavRow>
+                {children}
+            </NavRow>
+            {isMenuOpen && (
+                <MobileMenu>
+                    <MobileMenuContainer>
+                        <NavBar
+                            isMobile={true}
+                            onItemClick={onItemClick}
+                        />
+                    </MobileMenuContainer>
+                </MobileMenu>
+            )}
+        </StyledNav>
+    );
+}
+
+export default NavContainer;

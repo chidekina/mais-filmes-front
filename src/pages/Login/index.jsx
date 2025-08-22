@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/authContext';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../../components/FormContainer';
-import FormTitle from '../../components/FormTitle';
-import FormInput from '../../components/FormInput';
+import FormContainer from '../../components/Form/FormContainer';
+import FormTitle from '../../components/Form/FormTitle';
+import FormInput from '../../components/Form/FormInput';
 import Toast from '../../components/Toast';
 
 
@@ -35,13 +35,13 @@ const Login = () => {
         <>
             {error && <Toast>{error}</Toast>}
             <FormContainer onSubmit={handleSubmit}>
-                    <FormTitle title="Login" />
-                    <FormInput
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        bgColor="var(--highlight-color)"
-                        buttonText="Login"
-                    />
+                <FormTitle title="Login" />
+                <FormInput
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    bgColor="var(--highlight-color)"
+                    buttonText="Login"
+                />
             </FormContainer>
         </>
     );

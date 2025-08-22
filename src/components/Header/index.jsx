@@ -3,42 +3,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import NavBar from "../NavLink";
 import { useAuth } from '../../hooks/authContext';
-// ...existing code...
+import UserGreeting from "../UserGreeting";
+import HeaderContainer from "./HeaderContainer";
 
-const StyledHeader = styled.header`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 50;
-    background: var(--medium-gray-color);
-    backdrop-filter: blur(4px);
-    border-bottom: 1px solid rgba(209, 209, 214, 0.1);
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-`;
 
-const StyledNav = styled.nav`
-    max-width: 80rem;
-    margin: 0 auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    @media (min-width: 640px) {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-    @media (min-width: 1024px) {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
-`;
-
-const NavRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 4rem;
-`;
 
 const LogoLink = styled(Link)`
     display: flex;
@@ -104,9 +72,11 @@ const Header = () => {
     };
 
     return (
-        <StyledHeader>
-            <StyledNav>
-                <NavRow>
+        <HeaderContainer>
+            <NavContainer
+                isMenuOpen={isMenuOpen}
+                onItemClick={toggleMenu}
+            >
                     <LogoLink to="/">
                         <LogoImg
                             src="./logo-2.png"
@@ -127,15 +97,10 @@ const Header = () => {
                     </LogoLink>
                     <NavBar />
                     {displayName && (
-                        <>
-                            <span style={{ color: '#fff', fontWeight: 'semiBold', marginLeft: 5 }}>Olá, <span></span>{displayName}</span>
-                            <button
-                                onClick={handleLogout}
-                                style={{ marginLeft: 4, background: '#e63946', color: '#fff', border: 'none', borderRadius: 4, padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 'bold' }}
-                            >
-                                Logout
-                            </button>
-                        </>
+                        <UserGreeting 
+                            displayName={displayName}
+                            onClick={handleLogout}
+                        />
                     )}
                     <HamburgerButton onClick={toggleMenu} aria-label="Toggle menu">
                         {isMenuOpen ? (
@@ -148,16 +113,8 @@ const Header = () => {
                             </svg>
                         )}
                     </HamburgerButton>
-                </NavRow>
-                {isMenuOpen && (
-                    <MobileMenu>
-                        <MobileMenuContainer>
-                            <NavBar isMobile={true} onItemClick={toggleMenu} />
-                        </MobileMenuContainer>
-                    </MobileMenu>
-                )}
-            </StyledNav>
-        </StyledHeader>
+            </NavContainer>
+        </HeaderContainer>
     );
 
 }
