@@ -4,7 +4,7 @@ import backgroundImg from "/background.png";
 const Container = styled.section`
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    height: ${props => props.$height};
     padding: 0 5rem;
     padding-top: 8rem;
     background-image: url(${props => props.$bg});
@@ -12,9 +12,9 @@ const Container = styled.section`
     background-position: center;
     `
 
-const MainContainer = ({ children }) => {
+const MainContainer = ({ children, height="90vh" }) => {
     return ( 
-        <Container $bg={backgroundImg}>
+        <Container $bg={backgroundImg} $height={height} >
             {children}
         </Container>
      );

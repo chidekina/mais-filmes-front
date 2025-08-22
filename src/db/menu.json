@@ -8,5 +8,15 @@
     "id": 2,
     "name": "Meus Favoritos",
     "path": "/favorites"
+  },
+  {
+    "id": 3,
+    "name": "Login",
+    "path": "/login"
+  },
+  {
+    "id": 4,
+    "name": "Cadastro",
+    "path": "/register"
   }
 ]

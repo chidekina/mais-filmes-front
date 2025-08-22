@@ -1,6 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 import menuLinks from "../../db/menu.json";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
+import { useAuth } from '../../hooks/authContext';
 
 const NavList = styled.div`
     display: none;
@@ -51,11 +53,21 @@ const NavListMobile = styled.div`
     }
 `
 
-const NavBar = ({ isMobile = false, onItemClick }) => {
+const NavBar = ({ isMobile = false, onItemClick, userState, setUserState }) => {
+    const { currentUser } = useAuth();
+    const filteredLinks = React.useMemo(() => {
+        if (currentUser) {
+            // Hide login/cadastro only if logged in
+            return menuLinks.filter(link => link.path !== '/login' && link.path !== '/register');
+        }
+        // Always show all four options if not logged in
+        return menuLinks;
+    }, [currentUser]);
+
     if (isMobile) {
         return (
             <NavListMobile>
-                {menuLinks.map(link => (
+                {filteredLinks.map(link => (
                     <NavLink
                         key={link.id}
                         to={link.path}
@@ -71,7 +83,7 @@ const NavBar = ({ isMobile = false, onItemClick }) => {
     return (
         <NavList>
             <NavListContainer>
-                {menuLinks.map(link => (
+                {filteredLinks.map(link => (
                     <StyledNavLink
                         key={link.id}
                         to={link.path}

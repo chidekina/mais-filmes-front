@@ -16,16 +16,17 @@ const SearchInput = styled.input`
 
     &:focus {
         outline: 1px solid var(--light-gray-color);
-        color: transparent;
     }
 `
 
-const SearchBar = () => {
-    return ( 
-        <SearchInput 
-            placeholder="Procura filme"
+const SearchBar = ({ value, onChange }) => {
+    return (
+        <SearchInput
+            placeholder="Procurar filme"
+            value={value}
+            onChange={e => onChange(e.target.value)}
         />
-     );
+    );
 }
- 
+
 export default SearchBar;

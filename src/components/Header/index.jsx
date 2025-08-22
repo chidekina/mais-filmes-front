@@ -1,7 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import NavBar from "../NavLink";
+import { useAuth } from '../../hooks/authContext';
+// ...existing code...
 
 const StyledHeader = styled.header`
     position: fixed;
@@ -90,6 +92,12 @@ const MobileMenuContainer = styled.div`
 `;
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { currentUser, logoutUser } = useAuth();
+    const displayName = currentUser && (currentUser.displayName || currentUser.username);
+
+    const handleLogout = () => {
+        logoutUser();
+    };
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -102,7 +110,6 @@ const Header = () => {
                     <LogoLink to="/">
                         <LogoImg
                             src="./logo-2.png"
-                            alt="Logo Space Apps Fortaleza"
                             loading="lazy"
                             onMouseEnter={(e) => {
                                 e.target.style.filter = 'brightness(1.2) drop-shadow(0 0 15px rgba(209, 209, 214, 0.6))';
@@ -119,6 +126,17 @@ const Header = () => {
                         />
                     </LogoLink>
                     <NavBar />
+                    {displayName && (
+                        <>
+                            <span style={{ color: '#fff', fontWeight: 'semiBold', marginLeft: 5 }}>Olá, <span></span>{displayName}</span>
+                            <button
+                                onClick={handleLogout}
+                                style={{ marginLeft: 4, background: '#e63946', color: '#fff', border: 'none', borderRadius: 4, padding: '0.5rem 1rem', cursor: 'pointer', fontWeight: 'bold' }}
+                            >
+                                Logout
+                            </button>
+                        </>
+                    )}
                     <HamburgerButton onClick={toggleMenu} aria-label="Toggle menu">
                         {isMenuOpen ? (
                             <svg className="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { useFavorites } from '../../hooks/useFavorites';
 
 const Card = styled.div`
     background: var(--light-gray-color);
@@ -8,6 +10,8 @@ const Card = styled.div`
     transition: transform 0.2s, opacity 0.5s;
     opacity: 0;
     animation: fadeIn 0.6s forwards;
+
+    position: relative;
 
     @keyframes fadeIn {
         from { opacity: 0; }
@@ -43,9 +47,21 @@ const Overview = styled.p`
     margin-top: 10px;
 `
 
-const MovieCard = ({ movie, getImageUrl }) => {
+const MovieCard = ({ movie, getImageUrl, onClick }) => {
+    const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
+    const favorite = isFavorite(movie.id);
+
+    const handleHeartClick = (e) => {
+        e.stopPropagation();
+        if (favorite) {
+            removeFromFavorites(movie.id);
+        } else {
+            addToFavorites(movie);
+        }
+    };
+
     return (
-        <Card className="movie-card">
+        <Card className="movie-card" onClick={onClick} style={{ cursor: 'pointer' }}>
             <img
                 src={getImageUrl(movie.poster_path)}
                 alt={movie.title}
@@ -53,6 +69,22 @@ const MovieCard = ({ movie, getImageUrl }) => {
                     e.target.src = 'https://via.placeholder.com/300x450/cccccc/666666?text=Sem+Imagem';
                 }}
             />
+            <button
+                onClick={handleHeartClick}
+                style={{
+                    position: 'absolute',
+                    top: 16,
+                    right: 16,
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    zIndex: 2
+                }}
+                aria-label={favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+            >
+                {favorite ? <FaHeart size={24} color="#e63946" /> : <FaRegHeart size={24} color="#e63946" />}
+            </button>
             <h3>{movie.title}</h3>
             <p><strong>Nota:</strong> ⭐ {movie.vote_average.toFixed(1)}/10</p>
             <p><strong>Lançamento:</strong> {new Date(movie.release_date).toLocaleDateString('pt-BR')}</p>

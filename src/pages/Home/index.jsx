@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { fetchNowPlayingMovies, fetchPopularMovies, fetchTopRatedMovies, fetchUpcomingMovies, getImageUrl } from "../../services/api";
+import api from "../../services/api";
 import MainContainer from "../../components/MainContainer";
-import WelcomeTitle from "../../components/WelcomeTitle";
-import CategoryTitle from "../../components/CategoryTitle";
-import SearchBar from "../../components/SearchBar";
-import MoviesList from "../../components/MoviesList";
 import Loading from "../../components/Loading";
-import CategoriesSelect from "../../components/CategoriesSelect";
+import PageHeader from "../../components/PageHeader";
+import ErrorMessage from "../../components/ErrorMessage";
+import MoviesSection from "../../components/MoviesSection";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+    const navigate = useNavigate();
     const [selectedCategory, setSelectedCategory] = useState("popular");
+    const [search, setSearch] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
     const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
     const [topRatedMovies, setTopRatedMovies] = useState([]);
@@ -24,7 +27,7 @@ const Home = () => {
                 setLoading(true);
                 setError(null);
 
-                const data = await fetchPopularMovies();
+                const data = await api.fetchPopularMovies();
 
                 setPopularMovies(data.results || []);
             } catch (error) {
@@ -40,7 +43,7 @@ const Home = () => {
                 setLoading(true);
                 setError(null);
 
-                const data = await fetchNowPlayingMovies();
+                const data = await api.fetchNowPlayingMovies();
 
                 setNowPlayingMovies(data.results || []);
             } catch (error) {
@@ -56,7 +59,7 @@ const Home = () => {
                 setLoading(true);
                 setError(null);
 
-                const data = await fetchTopRatedMovies();
+                const data = await api.fetchTopRatedMovies();
 
                 setTopRatedMovies(data.results || []);
             } catch (error) {
@@ -72,7 +75,7 @@ const Home = () => {
                 setLoading(true);
                 setError(null);
 
-                const data = await fetchUpcomingMovies();
+                const data = await api.fetchUpcomingMovies();
 
                 setUpcomingMovies(data.results || []);
             } catch (error) {
@@ -95,7 +98,29 @@ const Home = () => {
     if (selectedCategory === "topRated") moviesToShow = topRatedMovies;
     if (selectedCategory === "upcoming") moviesToShow = upcomingMovies;
 
-    if (loading || minLoading) {
+    // Busca na API quando o usuário digita
+    useEffect(() => {
+        const fetchSearch = async () => {
+            if (!search) {
+                setSearchResults([]);
+                setSearchLoading(false);
+                return;
+            }
+            try {
+                const data = await api.searchMovies(search);
+                setSearchResults(data.results || []);
+            } catch (error) {
+                setSearchResults([]);
+            } finally {
+                setSearchLoading(false);
+            }
+        };
+        fetchSearch();
+    }, [search]);
+
+    const moviesToDisplay = search ? searchResults : moviesToShow;
+
+    if ((loading || minLoading) && !search) {
         return (
             <MainContainer>
                 <Loading onFinish={() => setMinLoading(false)} />
@@ -103,30 +128,31 @@ const Home = () => {
         );
     }
 
-    if (error) {
+    if (searchLoading) {
         return (
             <MainContainer>
-                <h1>❌ {error}</h1>
-                <button onClick={() => window.location.reload()}>
-                    Tentar Novamente
-                </button>
+                <Loading />
             </MainContainer>
         );
     }
 
+    if (error) {
+        return (
+            <MainContainer>
+                <ErrorMessage error={error} onRetry={() => window.location.reload()} />
+            </MainContainer>
+        );
+    }
 
     return (
         <MainContainer>
-            <WelcomeTitle />
-            <SearchBar />
-            <CategoriesSelect
+            <PageHeader search={search} setSearch={setSearch} />
+            <MoviesSection
                 selectedCategory={selectedCategory}
-                onClick={setSelectedCategory}
-                moviesToShow={moviesToShow}
-            />
-            <MoviesList
-                movies={moviesToShow}
-                getImageUrl={getImageUrl}
+                setSelectedCategory={setSelectedCategory}
+                moviesToDisplay={moviesToDisplay}
+                getImageUrl={api.getImageUrl}
+                onMovieClick={id => navigate(`/filme/${id}`)}
             />
         </MainContainer>
     );

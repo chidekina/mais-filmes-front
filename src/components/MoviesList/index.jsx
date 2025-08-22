@@ -8,7 +8,7 @@ const ContainerMovies = styled.div`
     padding: 20px 0;
 `
 
-const MoviesList = ({ movies, getImageUrl }) => {
+const MoviesList = ({ movies, getImageUrl, onMovieClick }) => {
     return (
         <ContainerMovies>
             {movies.map(movie => (
@@ -16,6 +16,7 @@ const MoviesList = ({ movies, getImageUrl }) => {
                     key={movie.id}
                     movie={movie}
                     getImageUrl={getImageUrl}
+                    onClick={() => onMovieClick(movie.id)}
                 />
             ))}
         </ContainerMovies>
