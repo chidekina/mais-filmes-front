@@ -22,6 +22,23 @@ const NavRow = styled.div`
     height: 4rem;
 `;
 
+const MobileMenu = styled.div`
+    @media (min-width: 768px) {
+        display: none;
+    }
+    margin-top: 0.5rem;
+`;
+
+const MobileMenuContainer = styled.div`
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.75rem;
+    background: var(--medium-gray-color);
+    backdrop-filter: blur(4px);
+    border-radius: 0.5rem;
+`;
+
 const NavContainer = ({ children, isMenuOpen, onItemClick }) => {
     return (
         <StyledNav>
