@@ -4,12 +4,22 @@ const MovieCard = styled.li`
     margin-bottom: 1.5rem;
     background: #222;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 0.75rem;
     color: #fff;
     width: 100%;
     display: flex;
-    align-items: center; /* Mudou de flex-start para center */
-    gap: 24px;
+    align-items: flex-start;
+    gap: 12px;
+
+    @media (min-width: 640px) {
+        padding: 1rem;
+        gap: 18px;
+        align-items: center;
+    }
+
+    @media (min-width: 768px) {
+        gap: 24px;
+    }
 `;
 
 const Info = styled.div`
@@ -31,10 +41,21 @@ const Details = styled.div`
 `;
 
 const Poster = styled.img`
-    width: 100px;
-    height: 150px;
+    width: 70px;
+    height: 105px;
     object-fit: cover;
     border-radius: 8px;
+    flex-shrink: 0;
+
+    @media (min-width: 640px) {
+        width: 85px;
+        height: 127px;
+    }
+
+    @media (min-width: 768px) {
+        width: 100px;
+        height: 150px;
+    }
 `;
 
 const Title = styled.strong`

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import NavBar from "../NavBar";
 
 const StyledNav = styled.nav`
     max-width: 80rem;
@@ -39,7 +40,7 @@ const MobileMenuContainer = styled.div`
     border-radius: 0.5rem;
 `;
 
-const NavContainer = ({ children, isMenuOpen, onItemClick }) => {
+const NavContainer = ({ children, isMenuOpen, onItemClick, onLogout }) => {
     return (
         <StyledNav>
             <NavRow>
@@ -51,6 +52,7 @@ const NavContainer = ({ children, isMenuOpen, onItemClick }) => {
                         <NavBar
                             isMobile={true}
                             onItemClick={onItemClick}
+                            onLogout={onLogout}
                         />
                     </MobileMenuContainer>
                 </MobileMenu>

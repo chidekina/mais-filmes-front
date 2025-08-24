@@ -10,6 +10,14 @@ const HighlightName = styled.span`
     font-weight: 800;
 `
 
+const UserGreetingContainer = styled.div`
+    display: none;
+
+    @media (min-width: 768px) {
+        display: block;
+    }
+`;
+
 const LogoutButton = styled.button`
     margin-left: 50px;
     background-color: var(--black-graphite-color);
@@ -23,14 +31,14 @@ const LogoutButton = styled.button`
 
 const UserGreeting = ({ displayName, onClick }) => {
     return (
-        <div>
+        <UserGreetingContainer>
             <NameDisplay>Olá, <HighlightName>{displayName}</HighlightName></NameDisplay>
             <LogoutButton
                 onClick={onClick}
             >
                 Logout
             </LogoutButton>
-        </div>
+        </UserGreetingContainer>
     );
 }
 

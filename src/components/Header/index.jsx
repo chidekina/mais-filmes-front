@@ -28,6 +28,7 @@ const Header = () => {
             <NavContainer
                 isMenuOpen={isMenuOpen}
                 onItemClick={toggleMenu}
+                onLogout={handleLogout}
             >
                 <HeaderLogo />
                 <NavBar />

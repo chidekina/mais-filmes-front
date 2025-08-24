@@ -51,9 +51,47 @@ const NavListMobile = styled.div`
             color: var(--highlight-color);
         }
     }
+`;
+
+const MobileUserSection = styled.div`
+    border-top: 1px solid var(--medium-gray-color);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+`;
+
+const MobileUserGreeting = styled.div`
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0 0.75rem;
+    
+    span {
+        color: var(--highlight-color);
+        font-weight: 800;
+    }
+`;
+
+const MobileLogoutButton = styled.button`
+    background-color: var(--highlight-color);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0 0.75rem;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #e63946;
+    }
 `
 
-const NavBar = ({ isMobile = false, onItemClick }) => {
+const NavBar = ({ isMobile = false, onItemClick, onLogout }) => {
     const { currentUser } = useAuth();
     const filteredLinks = React.useMemo(() => {
         if (currentUser) {
@@ -61,6 +99,8 @@ const NavBar = ({ isMobile = false, onItemClick }) => {
         }
         return menuLinks;
     }, [currentUser]);
+
+    const displayName = currentUser && (currentUser.displayName || currentUser.username);
 
     if (isMobile) {
         return (
@@ -74,6 +114,21 @@ const NavBar = ({ isMobile = false, onItemClick }) => {
                         {link.name}
                     </NavLink>
                 ))}
+                {currentUser && (
+                    <MobileUserSection>
+                        <MobileUserGreeting>
+                            Olá, <span>{displayName}</span>
+                        </MobileUserGreeting>
+                        <MobileLogoutButton 
+                            onClick={() => {
+                                onLogout && onLogout();
+                                onItemClick && onItemClick();
+                            }}
+                        >
+                            Logout
+                        </MobileLogoutButton>
+                    </MobileUserSection>
+                )}
             </NavListMobile>
         );
     }
