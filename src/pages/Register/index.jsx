@@ -1,43 +1,38 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../hooks/authContext';
-import { useNavigate } from 'react-router-dom';
+import Toast from '../../components/Toast';
 import Form from '../../components/Form';
-
+import useAuthForm from '../../hooks/useAuthForm';
 
 const Register = () => {
-    const { loginUser } = useAuth();
-    const [username, setUsername] = useState('');
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
-
-
-    useEffect(() => {
-        if (error) {
-            const timer = setTimeout(() => setError(''), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [error]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!username.trim()) {
-            setError('Digite um nome de usuário.');
-            return;
-        }
-        loginUser(username);
-        navigate('/');
-    };
+    const {
+        username,
+        setUsername,
+        isSubmitting,
+        toast,
+        hasMessage,
+        hideToast,
+        handleSubmit,
+        messages,
+    } = useAuthForm('register');
 
     return (
         <>
-            {error && <Toast>{error}</Toast>}
+            {hasMessage && (
+                <Toast 
+                    type={toast.type}
+                    onClose={hideToast}
+                >
+                    {toast.message}
+                </Toast>
+            )}
+            
             <Form
                 onSubmit={handleSubmit}
                 title="Cadastro"
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 bgColor="var(--medium-gray-color)"
-                buttonText="Cadastrar"
+                buttonText={isSubmitting ? messages.loadingText : messages.buttonText}
+                disabled={isSubmitting}
             />
         </>
     );
