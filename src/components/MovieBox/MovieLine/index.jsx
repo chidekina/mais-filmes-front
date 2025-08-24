@@ -1,6 +1,6 @@
 const MovieLine = ({ title, details }) => {
     return (
-                <p><strong>{title}</strong> {details.overview}</p>
+                <p><strong>{title}</strong> {details}</p>
       );
 }
  

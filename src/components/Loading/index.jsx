@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useMinLoading from "../../hooks/useMinLoading";
+import useLoadingPhrases from "../../hooks/useLoadingPhrases";
 
 const LogoLoading = styled.img`
     width: 300px;
@@ -24,34 +26,15 @@ const TitleLoading = styled.h1`
     font-weight: 700;
 `
 
-
-const phrases = [
-    "Escolhendo os melhores filmes...",
-    "Buscando novidades para você...",
-    "Preparando a pipoca...",
-    "Ajustando as luzes do cinema...",
-    "Carregando sucessos de bilheteria..."
-];
-
-const Loading = ({ onFinish }) => {
-    const [minLoading, setMinLoading] = useState(true);
-    const [phraseIndex, setPhraseIndex] = useState(0);
+const Loading = ({ onFinish, duration = 3000 }) => {
+    const { minLoading } = useMinLoading(false, duration);
+    const { currentPhrase } = useLoadingPhrases(minLoading);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setMinLoading(false);
-            if (onFinish) onFinish();
-        }, 3000);
-        return () => clearTimeout(timer);
-    }, [onFinish]);
-
-    useEffect(() => {
-        if (!minLoading) return;
-        const phraseTimer = setInterval(() => {
-            setPhraseIndex(idx => (idx + 1) % phrases.length);
-        }, 400);
-        return () => clearInterval(phraseTimer);
-    }, [minLoading]);
+        if (!minLoading && onFinish) {
+            onFinish();
+        }
+    }, [minLoading, onFinish]);
 
     if (minLoading) {
         return (
@@ -63,7 +46,7 @@ const Loading = ({ onFinish }) => {
                 >
                     <LogoLoading src="/logo-2.png" alt="Logo" />
                 </motion.div>
-                <TitleLoading>{phrases[phraseIndex]}</TitleLoading>
+                <TitleLoading>{currentPhrase}</TitleLoading>
             </div>
         );
     }
