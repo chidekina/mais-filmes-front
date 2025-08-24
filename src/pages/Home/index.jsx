@@ -1,126 +1,30 @@
-import { useEffect, useState } from "react";
+// pages/Home/Home.js
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import MainContainer from "../../components/MainContainer";
 import Loading from "../../components/Loading";
 import PageHeader from "../../components/PageHeader";
 import ErrorMessage from "../../components/ErrorMessage";
 import MoviesSection from "../../components/MoviesSection";
-import { useNavigate } from "react-router-dom";
+import useMovies from "../../hooks/useMovies";
+import useSearch from "../../hooks/useSearch";
+import useMinLoading from "../../hooks/useMinLoading";
 
 const Home = () => {
     const navigate = useNavigate();
     const [selectedCategory, setSelectedCategory] = useState("popular");
-    const [search, setSearch] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
-    const [searchLoading, setSearchLoading] = useState(false);
-    const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
-    const [popularMovies, setPopularMovies] = useState([]);
-    const [topRatedMovies, setTopRatedMovies] = useState([]);
-    const [upcomingMovies, setUpcomingMovies] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [minLoading, setMinLoading] = useState(true);
-    const [error, setError] = useState(null);
+    
+    const { movies, loading, error, getMoviesByCategory } = useMovies();
+    const { search, setSearch, searchResults, searchLoading, hasSearch } = useSearch();
+    const { minLoading, setMinLoading } = useMinLoading(loading);
 
-    useEffect(() => {
-        const getPopularMovies = async () => {
-            try {
-                setLoading(true);
-                setError(null);
+    const moviesToDisplay = hasSearch ? searchResults : getMoviesByCategory(selectedCategory);
 
-                const data = await api.fetchPopularMovies();
+    const handleRetry = () => window.location.reload();
+    const handleMovieClick = (id) => navigate(`/filme/${id}`);
 
-                setPopularMovies(data.results || []);
-            } catch (error) {
-                console.error('Erro ao carregar filmes:', error);
-                setError('Erro ao carregar filmes. Tente novamente.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const getNowPlayingMovies = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-
-                const data = await api.fetchNowPlayingMovies();
-
-                setNowPlayingMovies(data.results || []);
-            } catch (error) {
-                console.error('Erro ao carregar filmes:', error);
-                setError('Erro ao carregar filmes. Tente novamente.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const getTopRatedMovies = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-
-                const data = await api.fetchTopRatedMovies();
-
-                setTopRatedMovies(data.results || []);
-            } catch (error) {
-                console.error('Erro ao carregar filmes:', error);
-                setError('Erro ao carregar filmes. Tente novamente.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const getUpcomingMovies = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-
-                const data = await api.fetchUpcomingMovies();
-
-                setUpcomingMovies(data.results || []);
-            } catch (error) {
-                console.error('Erro ao carregar filmes:', error);
-                setError('Erro ao carregar filmes. Tente novamente.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        getUpcomingMovies();
-        getNowPlayingMovies();
-        getTopRatedMovies();
-        getPopularMovies();
-    }, []);
-
-    let moviesToShow = [];
-    if (selectedCategory === "popular") moviesToShow = popularMovies;
-    if (selectedCategory === "nowPlaying") moviesToShow = nowPlayingMovies;
-    if (selectedCategory === "topRated") moviesToShow = topRatedMovies;
-    if (selectedCategory === "upcoming") moviesToShow = upcomingMovies;
-
-    // Busca na API quando o usuário digita
-    useEffect(() => {
-        const fetchSearch = async () => {
-            if (!search) {
-                setSearchResults([]);
-                setSearchLoading(false);
-                return;
-            }
-            try {
-                const data = await api.searchMovies(search);
-                setSearchResults(data.results || []);
-            } catch (error) {
-                setSearchResults([]);
-            } finally {
-                setSearchLoading(false);
-            }
-        };
-        fetchSearch();
-    }, [search]);
-
-    const moviesToDisplay = search ? searchResults : moviesToShow;
-
-    if ((loading || minLoading) && !search) {
+    if ((loading || minLoading) && !hasSearch) {
         return (
             <MainContainer>
                 <Loading onFinish={() => setMinLoading(false)} />
@@ -139,7 +43,7 @@ const Home = () => {
     if (error) {
         return (
             <MainContainer>
-                <ErrorMessage error={error} onRetry={() => window.location.reload()} />
+                <ErrorMessage error={error} onRetry={handleRetry} />
             </MainContainer>
         );
     }
@@ -152,7 +56,7 @@ const Home = () => {
                 setSelectedCategory={setSelectedCategory}
                 moviesToDisplay={moviesToDisplay}
                 getImageUrl={api.getImageUrl}
-                onMovieClick={id => navigate(`/filme/${id}`)}
+                onMovieClick={handleMovieClick}
             />
         </MainContainer>
     );

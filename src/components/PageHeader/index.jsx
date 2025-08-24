@@ -1,5 +1,5 @@
-import WelcomeTitle from "../WelcomeTitle";
-import SearchBar from "../SearchBar";
+import WelcomeTitle from "./WelcomeTitle";
+import SearchBar from "./SearchBar";
 
 const PageHeader = ({ search, setSearch }) => (
     <>

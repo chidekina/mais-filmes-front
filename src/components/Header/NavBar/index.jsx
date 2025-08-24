@@ -53,14 +53,12 @@ const NavListMobile = styled.div`
     }
 `
 
-const NavBar = ({ isMobile = false, onItemClick, userState, setUserState }) => {
+const NavBar = ({ isMobile = false, onItemClick }) => {
     const { currentUser } = useAuth();
     const filteredLinks = React.useMemo(() => {
         if (currentUser) {
-            // Hide login/cadastro only if logged in
             return menuLinks.filter(link => link.path !== '/login' && link.path !== '/register');
         }
-        // Always show all four options if not logged in
         return menuLinks;
     }, [currentUser]);
 

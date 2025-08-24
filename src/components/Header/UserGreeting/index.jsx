@@ -11,8 +11,9 @@ const HighlightName = styled.span`
 `
 
 const LogoutButton = styled.button`
-    margin-left: 4px;
-    background-color: var(--highlight-color);
+    margin-left: 50px;
+    background-color: var(--black-graphite-color);
+    color: var(--white);
     border: none;
     border-radius: 4px;
     padding: 0.5rem 1rem;

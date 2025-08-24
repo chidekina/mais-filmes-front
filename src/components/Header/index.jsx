@@ -1,9 +1,7 @@
 import { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import NavBar from "./NavLink";
+import NavBar from "./NavBar";
 import { useAuth } from '../../hooks/authContext';
-import UserGreeting from "../UserGreeting";
+import UserGreeting from "./UserGreeting";
 import HeaderContainer from "./HeaderContainer";
 import NavContainer from "./NavContainer";
 import HeaderLogo from "./HeaderLogo";

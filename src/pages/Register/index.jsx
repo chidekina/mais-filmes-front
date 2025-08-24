@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/authContext';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../../components/Form/FormContainer';
-import FormTitle from '../../components/Form/FormTitle';
-import FormInput from '../../components/Form/FormInput';
-import Toast from '../../components/Toast';
+import Form from '../../components/Form';
 
 
 const Register = () => {
@@ -34,15 +31,14 @@ const Register = () => {
     return (
         <>
             {error && <Toast>{error}</Toast>}
-            <FormContainer onSubmit={handleSubmit}>
-                <FormTitle title="Cadastro" />
-                <FormInput
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                    bgColor="var(--medium-gray-color)"
-                    buttonText="Cadastrar"
-                />
-            </FormContainer>
+            <Form
+                onSubmit={handleSubmit}
+                title="Cadastro"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                bgColor="var(--medium-gray-color)"
+                buttonText="Cadastrar"
+            />
         </>
     );
 };

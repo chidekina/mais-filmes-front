@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 const ToastBox = styled.div`
-    position: fixed;
-    top: 24px;
-    right: 24px;
+    min-width: 220px;
+    max-width: 350px;
     background: #e63946;
     color: #fff;
     padding: 12px 24px;
@@ -12,6 +11,10 @@ const ToastBox = styled.div`
     font-weight: bold;
     z-index: 9999;
     animation: fadein 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 `;
 
 const Toast = ({ message }) => {

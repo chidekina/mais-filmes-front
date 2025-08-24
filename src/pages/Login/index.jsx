@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/authContext';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../../components/Form/FormContainer';
-import FormTitle from '../../components/Form/FormTitle';
-import FormInput from '../../components/Form/FormInput';
 import Toast from '../../components/Toast';
+import Form from '../../components/Form';
 
 
 const Login = () => {
@@ -34,15 +32,14 @@ const Login = () => {
     return (
         <>
             {error && <Toast>{error}</Toast>}
-            <FormContainer onSubmit={handleSubmit}>
-                <FormTitle title="Login" />
-                <FormInput
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                    bgColor="var(--highlight-color)"
-                    buttonText="Login"
-                />
-            </FormContainer>
+            <Form
+                onSubmit={handleSubmit}
+                title="Login"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                bgColor="var(--highlight-color)"
+                buttonText="Login"
+            />
         </>
     );
 };

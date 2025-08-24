@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import favoritesService from '../services/favoritesService';
 
 const AuthContext = createContext();
@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }) => {
         setFavorites([]);
     };
 
-    // ...outros métodos do useFavorites podem ser adicionados aqui
 
     return (
         <AuthContext.Provider value={{ currentUser, favorites, loginUser, logoutUser }}>
