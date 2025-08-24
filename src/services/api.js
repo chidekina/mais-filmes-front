@@ -13,7 +13,7 @@ class MovieApi {
         }
 
     }
-    async fetchPopularMovies(page = 1) {
+    fetchPopularMovies = async (page = 1) => {
         try {
             const response = await axios.get(`${this.baseUrl}/movie/popular`, {
                 headers: this.headers,
@@ -29,7 +29,7 @@ class MovieApi {
         }
     }
 
-    async fetchNowPlayingMovies(page = 1) {
+    fetchNowPlayingMovies = async (page = 1) => {
         try {
             const response = await axios.get(`${this.baseUrl}/movie/now_playing`, {
                 headers: this.headers,
@@ -45,7 +45,7 @@ class MovieApi {
         }
     }
 
-    async fetchTopRatedMovies(page = 1) {
+    fetchTopRatedMovies = async (page = 1) => {
         try {
             const response = await axios.get(`${this.baseUrl}/movie/top_rated`, {
                 headers: this.headers,
@@ -61,7 +61,7 @@ class MovieApi {
         }
     }
 
-    async fetchUpcomingMovies(page = 1) {
+    fetchUpcomingMovies = async (page = 1) => {
         try {
             const response = await axios.get(`${this.baseUrl}/movie/upcoming`, {
                 headers: this.headers,
@@ -77,7 +77,7 @@ class MovieApi {
         }
     }
 
-    async searchMovies(query, page = 1) {
+    searchMovies = async (query, page = 1) => {
         try {
             const response = await axios.get(`${this.baseUrl}/search/movie`, {
                 headers: this.headers,
@@ -94,7 +94,7 @@ class MovieApi {
         }
     }
 
-    async fetchMovieDetails(movieId) {
+    fetchMovieDetails = async (movieId) => {
         try {
             const response = await axios.get(`${this.baseUrl}/movie/${movieId}`, {
                 headers: this.headers,
