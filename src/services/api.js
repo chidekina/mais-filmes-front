@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL = 'https://api.themoviedb.org/3';
-const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlMjIwMGNhYmFjY2YyNGY2OWRlZjJiMjU1MDdjNDdiZiIsIm5iZiI6MTc1NDc0ODczNi4xNTIsInN1YiI6IjY4OTc1NzQwYmU3MjAzZjIzNDJjMGMxMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BIx_inAJcp4xmkV-Hod0ImJIutAhBb3OIGH68dKUjQo';
+const BEARER_TOKEN = import.meta.env.VITE_BEARER_TOKEN;
 
 
 class MovieApi {
